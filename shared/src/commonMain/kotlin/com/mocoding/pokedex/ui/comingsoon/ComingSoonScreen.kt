@@ -31,7 +31,7 @@ internal fun ComingSoonScreen(component: ComingSoonComponent) {
                         Icon(Icons.Rounded.ArrowBackIosNew, contentDescription = null)
                     }
                 },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 )
             )

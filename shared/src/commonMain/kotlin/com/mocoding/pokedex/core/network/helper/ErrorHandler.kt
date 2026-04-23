@@ -5,8 +5,8 @@ import com.mocoding.pokedex.core.network.errors.PokedexException
 import com.mocoding.pokedex.pokedexDispatchers
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
-import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.withContext
+import kotlinx.io.IOException
 
 suspend inline fun <reified T> handleErrors(
     crossinline response: suspend () -> HttpResponse

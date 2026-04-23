@@ -7,7 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.ui.helper.LocalSafeArea
@@ -35,7 +34,7 @@ internal fun PokedexContent(
                         Icon(Icons.Rounded.ArrowBackIosNew, contentDescription = null)
                     }
                 },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 )
             )
@@ -96,7 +95,7 @@ internal fun PokedexContent(
                         .padding(top = 20.dp, bottom = 6.dp)
                 )
 
-                Divider(
+                HorizontalDivider(
                     color = MaterialTheme.colorScheme.outline.copy(alpha = .4f),
                     modifier = Modifier
                         .fillMaxWidth()

@@ -34,7 +34,7 @@ internal fun FavoriteContent(
                         Icon(Icons.Rounded.ArrowBackIosNew, contentDescription = null)
                     }
                 },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 )
             )
@@ -66,7 +66,7 @@ internal fun FavoriteContent(
                         .padding(top = 20.dp, bottom = 6.dp)
                 )
 
-                Divider(
+                HorizontalDivider(
                     color = MaterialTheme.colorScheme.outline.copy(alpha = .4f),
                     modifier = Modifier
                         .fillMaxWidth()

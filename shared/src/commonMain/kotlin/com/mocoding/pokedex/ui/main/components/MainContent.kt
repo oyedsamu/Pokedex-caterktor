@@ -120,7 +120,7 @@ internal fun MainContent(
                 .padding(top = 20.dp, bottom = 6.dp)
         )
 
-        Divider(
+        HorizontalDivider(
             color = MaterialTheme.colorScheme.outline.copy(alpha = .4f),
             modifier = Modifier
                 .fillMaxWidth()

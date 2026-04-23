@@ -2,23 +2,18 @@ package com.mocoding.pokedex.ui.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.ui.helper.LocalSafeArea
 import com.mocoding.pokedex.ui.main.components.MainContent
 import com.mocoding.pokedex.ui.main.components.MainModalDrawerSheet
 import com.mocoding.pokedex.ui.main.store.MainStore
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -97,7 +92,7 @@ internal fun MainContentDefault(
                                 Icon(Icons.Rounded.Menu, contentDescription = null)
                             }
                         },
-                        colors = TopAppBarDefaults.largeTopAppBarColors(
+                        colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = MaterialTheme.colorScheme.background
                         )
                     )
@@ -140,7 +135,7 @@ internal fun MainContentLarge(
             topBar = {
                 TopAppBar(
                     title = {},
-                    colors = TopAppBarDefaults.largeTopAppBarColors(
+                    colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.background
                     )
                 )

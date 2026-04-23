@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.native.cocoapods)
@@ -16,11 +18,9 @@ kotlin {
     jvm("desktop") {
     }
 
-    androidTarget{
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -154,10 +154,6 @@ kotlin {
             iosSimulatorArm64Test.dependsOn(this)
         }
 
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
     }
 }
 
