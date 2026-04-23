@@ -37,7 +37,10 @@ class MainComponent(
     sealed class Output {
         object PokedexClicked : Output()
         object FavoriteClicked : Output()
-        object ComingSoon : Output()
+        object MovesClicked : Output()
+        object EvolutionsClicked : Output()
+        object LocationsClicked : Output()
+        data class WatchClicked(val videoId: String) : Output()
         data class PokedexSearchSubmitted(val searchValue: String) : Output()
     }
 

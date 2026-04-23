@@ -81,7 +81,7 @@ internal fun MainContent(
 
             CategoryButton(
                 onClick = {
-                    onOutput(MainComponent.Output.ComingSoon)
+                    onOutput(MainComponent.Output.MovesClicked)
                 },
                 categoryState = CategoryState.moves,
                 modifier = Modifier.weight(1f),
@@ -94,7 +94,7 @@ internal fun MainContent(
         ) {
             CategoryButton(
                 onClick = {
-                    onOutput(MainComponent.Output.ComingSoon)
+                    onOutput(MainComponent.Output.EvolutionsClicked)
                 },
                 categoryState = CategoryState.evolutions,
                 modifier = Modifier.weight(1f),
@@ -102,7 +102,7 @@ internal fun MainContent(
 
             CategoryButton(
                 onClick = {
-                    onOutput(MainComponent.Output.ComingSoon)
+                    onOutput(MainComponent.Output.LocationsClicked)
                 },
                 categoryState = CategoryState.locations,
                 modifier = Modifier.weight(1f),
@@ -131,7 +131,7 @@ internal fun MainContent(
             VideoRow(
                 videoList = Video.demoList,
                 onVideoClicked = {
-                    onOutput(MainComponent.Output.ComingSoon)
+                    onOutput(MainComponent.Output.WatchClicked(it))
                 }
             )
         }
