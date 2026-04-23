@@ -11,6 +11,7 @@ internal fun DetailsScreen(component: DetailsComponent) {
     val state by component.state.collectAsState()
 
     DetailsContent(
+        pokemonName = component.pokemonName,
         state = state,
         onEvent = component::onEvent,
         onOutput = component::onOutput

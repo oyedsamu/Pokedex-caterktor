@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 class DetailsComponent(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
-    pokemonName: String,
+    val pokemonName: String,
     private val output: (Output) -> Unit
 ): ComponentContext by componentContext {
 

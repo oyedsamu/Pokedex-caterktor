@@ -24,15 +24,21 @@ import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.ui.main.components.AsyncImage
 import com.mocoding.pokedex.ui.details.DetailsComponent
 import com.mocoding.pokedex.ui.details.store.DetailsStore
+import com.mocoding.pokedex.ui.helper.LocalAnimatedVisibilityScope
 import com.mocoding.pokedex.ui.helper.LocalSafeArea
+import com.mocoding.pokedex.ui.helper.LocalSharedTransitionScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DetailsContent(
+    pokemonName: String,
     state: DetailsStore.State,
     onEvent: (DetailsStore.Intent) -> Unit,
     onOutput: (DetailsComponent.Output) -> Unit,
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+
     Box(contentAlignment = Alignment.TopCenter) {
         state.pokemonInfo?.let { pokemonInfo ->
             AsyncImage(
@@ -130,15 +136,23 @@ internal fun DetailsContent(
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         item("image") {
+                            val imageModifier = Modifier
+                                .widthIn(max = 500.dp)
+                                .fillMaxWidth()
+                                .aspectRatio(1.2f)
+                                .fillMaxHeight()
                             AsyncImage(
                                 url = pokemonInfo.imageUrl,
                                 contentDescription = pokemonInfo.name,
                                 contentScale = ContentScale.Fit,
-                                modifier = Modifier
-                                    .widthIn(max = 500.dp)
-                                    .fillMaxWidth()
-                                    .aspectRatio(1.2f)
-                                    .fillMaxHeight()
+                                modifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                                    with(sharedTransitionScope) {
+                                        imageModifier.sharedElement(
+                                            sharedContentState = rememberSharedContentState(key = "pokemon_image_$pokemonName"),
+                                            animatedVisibilityScope = animatedVisibilityScope
+                                        )
+                                    }
+                                } else imageModifier
                             )
                         }
 

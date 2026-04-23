@@ -2,6 +2,8 @@ package com.mocoding.pokedex.ui.main.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
@@ -9,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.core.model.Video
 import com.mocoding.pokedex.ui.main.MainComponent
@@ -37,6 +40,11 @@ internal fun MainContent(
         )
 
         val containerColor = MaterialTheme.colorScheme.surface.copy(alpha = .2f)
+        val submitSearch: () -> Unit = {
+            if (state.search.isNotBlank()) {
+                onOutput(MainComponent.Output.PokedexSearchSubmitted(state.search.trim()))
+            }
+        }
         TextField(
             value = state.search,
             onValueChange = { onEvent(MainStore.Intent.InputPokemonSearch(it)) },
@@ -45,11 +53,14 @@ internal fun MainContent(
             },
             leadingIcon = {
                 IconButton(
-                    onClick = {}
+                    onClick = submitSearch
                 ) {
                     Icon(Icons.Rounded.Search, contentDescription = "Search Pokemon")
                 }
             },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { submitSearch() }),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = containerColor,
                 unfocusedContainerColor = containerColor,

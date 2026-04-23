@@ -23,7 +23,7 @@ internal class PokedexStoreFactory(
     fun create(): PokedexStore =
         object : PokedexStore, Store<PokedexStore.Intent, PokedexStore.State, Nothing> by storeFactory.create(
             name = "PokedexStore",
-            initialState = PokedexStore.State(),
+            initialState = PokedexStore.State(searchValue = searchValue),
             bootstrapper = SimpleBootstrapper(Unit),
             executorFactory = ::ExecutorImpl,
             reducer = ReducerImpl
@@ -80,7 +80,7 @@ internal class PokedexStoreFactory(
         override fun PokedexStore.State.reduce(msg: Msg): PokedexStore.State =
             when (msg) {
                 is Msg.PokemonListLoading -> copy(isLoading = true)
-                is Msg.PokemonListLoaded -> PokedexStore.State(pokemonList = pokemonList + msg.pokemonList)
+                is Msg.PokemonListLoaded -> copy(isLoading = false, pokemonList = pokemonList + msg.pokemonList)
                 is Msg.PokemonListFailed -> copy(error = msg.error)
                 is Msg.SearchValueUpdated -> copy(searchValue = msg.searchValue)
                 Msg.LastPageLoaded -> copy(isLastPageLoaded = true)
