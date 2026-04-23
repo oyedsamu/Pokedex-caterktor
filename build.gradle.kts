@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.jetbrains.compose) apply false
     alias(libs.plugins.kotlin.native.cocoapods) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 allprojects {

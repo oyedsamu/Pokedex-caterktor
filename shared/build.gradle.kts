@@ -4,14 +4,16 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.compose)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.sqldelight)
 }
 
 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
 kotlin {
+    jvmToolchain(11)
+
     jvm("desktop") {
-        jvmToolchain(11)
     }
 
     androidTarget{
