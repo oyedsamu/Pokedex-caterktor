@@ -1,6 +1,18 @@
 # Pokedex
 
-Pokedex is kotlin multiplatform project with 99% shared code, built with Compose multiplatform, Coroutines, Flow, Decompose, MVIKotlin, Koin, Ktor, SqlDelight, and Material 3 based on MVI architecture
+Pokedex is a Kotlin Multiplatform sample app used to showcase a simple migration from raw Ktor to [CaterKtor](https://github.com/oyedsamu/caterktor).
+
+The goal of this project is to show how an existing KMP app can move away from direct Ktor client usage to a more application-focused networking layer while keeping the rest of the app stable.
+
+Key gains from the migration:
+- Typed `NetworkResult` handling instead of ad hoc Ktor exception parsing
+- Structured network errors instead of transport-specific branching
+- Explicit, reusable networking setup across Android, iOS, and desktop
+- A clearer path for retries, auth, logging, and testing as the app grows
+
+Migration plan: [CATERKTOR_MIGRATION_PLAN.md](/Users/fmy-980/StudioProjects/Pokedex-caterktor/CATERKTOR_MIGRATION_PLAN.md:1)
+
+This app is built with Compose Multiplatform, Coroutines, Flow, Decompose, MVIKotlin, Koin, CaterKtor, SqlDelight, and Material 3 based on MVI architecture.
 <br>
 <br>
 
@@ -11,7 +23,7 @@ Pokedex is kotlin multiplatform project with 99% shared code, built with Compose
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization): Kotlin multiplatform / multi-format serialization.
 - [Compose multiplatform](https://github.com/JetBrains/compose-multiplatform): a modern UI framework for Kotlin.
 - [Decompose](https://github.com/arkivanov/Decompose): for navigation.
-- [Ktor](https://github.com/ktorio/ktor): for making network requests.
+- [CaterKtor](https://github.com/oyedsamu/caterktor): application-focused networking on top of Ktor transports.
 - [SqlDelight](https://github.com/cashapp/sqldelight): for caching data.
 - [Koin](https://github.com/InsertKoinIO/koin): a pragmatic lightweight dependency injection framework.
 - Architecture

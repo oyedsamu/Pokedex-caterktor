@@ -5,14 +5,13 @@ activityCompose = "1.13.0"
 compose = "1.10.3"
 coroutines = "1.10.2"
 serialization = "1.11.0"
+caterktor = "0.1.0"
 mviKotlin = "3.3.0"
 decompose = "2.1.4-compose-experimental"
 essenty = "1.2.0"
-ktor = "3.4.2"
 sqlDelight = "2.2.1"
 koin = "4.1.1"
 imageLoader = "1.7.1"
-logbackClassic = "1.2.11"
 kotlinWrappersBom = "1.0.0-pre.641"
 touchlab = "2.0.5"
 compileSdk = "36"
@@ -26,6 +25,7 @@ appVersionCode = "1"
 [libraries]
 # Org.JetBrains.Kotlinx
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 # Org.JetBrains.KotlinWrappers
@@ -35,18 +35,15 @@ kotlin-styled = { module = "org.jetbrains.kotlin-wrappers:kotlin-styled" } # Use
 # Androidx.Activity
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 
-# Io.Ktor
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
-ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
-ktor-client-java = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
-ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
-
-# Logback
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
+# CaterKtor
+caterktor-core = { module = "io.github.oyedsamu:caterktor-core", version.ref = "caterktor" }
+caterktor-ktor = { module = "io.github.oyedsamu:caterktor-ktor", version.ref = "caterktor" }
+caterktor-logging = { module = "io.github.oyedsamu:caterktor-logging", version.ref = "caterktor" }
+caterktor-serialization-json = { module = "io.github.oyedsamu:caterktor-serialization-json", version.ref = "caterktor" }
+caterktor-engine-okhttp = { module = "io.github.oyedsamu:caterktor-engine-okhttp", version.ref = "caterktor" }
+caterktor-engine-darwin = { module = "io.github.oyedsamu:caterktor-engine-darwin", version.ref = "caterktor" }
+caterktor-engine-cio = { module = "io.github.oyedsamu:caterktor-engine-cio", version.ref = "caterktor" }
+caterktor-testing = { module = "io.github.oyedsamu:caterktor-testing", version.ref = "caterktor" }
 
 # CashApp.SQLDelight
 sqldelight-gradle-plugin = { module = "app.cash.sqldelight:gradle-plugin", version.ref = "sqlDelight" } # This is a plugin, will also add to [plugins]

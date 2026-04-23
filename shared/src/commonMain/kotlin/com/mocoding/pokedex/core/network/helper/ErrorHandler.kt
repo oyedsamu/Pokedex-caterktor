@@ -3,32 +3,38 @@ package com.mocoding.pokedex.core.network.helper
 import com.mocoding.pokedex.core.network.errors.PokedexError
 import com.mocoding.pokedex.core.network.errors.PokedexException
 import com.mocoding.pokedex.pokedexDispatchers
-import io.ktor.client.call.body
-import io.ktor.client.statement.HttpResponse
+import io.github.oyedsamu.caterktor.NetworkError
+import io.github.oyedsamu.caterktor.NetworkResult
 import kotlinx.coroutines.withContext
-import kotlinx.io.IOException
+import kotlin.coroutines.cancellation.CancellationException
 
-suspend inline fun <reified T> handleErrors(
-    crossinline response: suspend () -> HttpResponse
+@Suppress("CyclomaticComplexMethod")
+suspend fun <T> handleErrors(
+    response: suspend () -> NetworkResult<T>
 ): T = withContext(pokedexDispatchers.io) {
+    when (val result = response()) {
+        is NetworkResult.Success -> result.body
+        is NetworkResult.Failure -> throw result.error.toPokedexException()
+    }
+}
 
-    val result = try {
-        response()
-    } catch(e: IOException) {
-        throw PokedexException(PokedexError.ServiceUnavailable)
+private fun NetworkError.toPokedexException(): PokedexException {
+    val error = when (this) {
+        is NetworkError.ConnectionFailed,
+        is NetworkError.Timeout -> PokedexError.ServiceUnavailable
+        is NetworkError.Http -> when {
+            status.isClientError -> PokedexError.ClientError
+            status.isServerError -> PokedexError.ServerError
+            else -> PokedexError.UnknownError
+        }
+        is NetworkError.Serialization -> PokedexError.ServerError
+        is NetworkError.Protocol -> PokedexError.ServerError
+        is NetworkError.CircuitOpen -> PokedexError.ServiceUnavailable
+        is NetworkError.Unknown -> when (cause) {
+            is CancellationException -> throw cause
+            else -> PokedexError.UnknownError
+        }
     }
 
-    when(result.status.value) {
-        in 200..299 -> Unit
-        in 400..499 -> throw PokedexException(PokedexError.ClientError)
-        500 -> throw PokedexException(PokedexError.ServerError)
-        else -> throw PokedexException(PokedexError.UnknownError)
-    }
-
-    return@withContext try {
-        result.body()
-    } catch(e: Exception) {
-        throw PokedexException(PokedexError.ServerError)
-    }
-
+    return PokedexException(error)
 }

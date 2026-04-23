@@ -54,14 +54,11 @@ kotlin {
                     api(materialIconsExtended)
                 }
 
-                // Ktor
-                api(libs.ktor.client.core)
-                api(libs.ktor.serialization.kotlinx.json)
-                api(libs.ktor.client.contentNegotiation)
-                api(libs.ktor.client.logging)
-
-                // Logback for ktor logging
-                implementation(libs.logback.classic)
+                // CaterKtor
+                api(libs.caterktor.core)
+                api(libs.caterktor.ktor)
+                api(libs.caterktor.serialization.json)
+                implementation(libs.caterktor.logging)
 
                 // SqlDelight
                 api(libs.sqldelight.coroutines.extensions)
@@ -94,12 +91,14 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.caterktor.testing)
             }
         }
         val androidMain by getting {
             dependencies {
-                // Ktor
-                implementation(libs.ktor.client.android)
+                // CaterKtor
+                implementation(libs.caterktor.engine.okhttp)
 
                 // SqlDelight
                 implementation(libs.sqldelight.android.driver)
@@ -108,14 +107,16 @@ kotlin {
                 implementation(libs.koin.android)
             }
         }
-        val androidUnitTest by getting
+        val androidUnitTest by getting {
+            dependsOn(commonTest)
+        }
 
         val desktopMain by getting {
             dependsOn(commonMain)
 
             dependencies {
-                // Ktor
-                implementation(libs.ktor.client.java)
+                // CaterKtor
+                implementation(libs.caterktor.engine.cio)
 
                 // SqlDelight
                 implementation(libs.sqldelight.sqlite.driver)
@@ -132,8 +133,8 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                // Ktor
-                implementation(libs.ktor.client.darwin)
+                // CaterKtor
+                implementation(libs.caterktor.engine.darwin)
 
                 // SqlDelight
                 implementation(libs.sqldelight.native.driver)

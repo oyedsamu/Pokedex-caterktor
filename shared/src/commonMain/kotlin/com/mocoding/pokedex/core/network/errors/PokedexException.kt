@@ -7,6 +7,6 @@ enum class PokedexError {
     UnknownError
 }
 
-class PokedexException(error: PokedexError): Exception(
+class PokedexException(val error: PokedexError): Exception(
     "Something goes wrong: $error"
 )
