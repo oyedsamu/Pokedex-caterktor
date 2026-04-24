@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.core.model.LocationAreaSummary
+import com.mocoding.pokedex.core.network.client.LocationsClient
 import com.mocoding.pokedex.ui.feature.LaunchedLoadMore
 import com.mocoding.pokedex.ui.feature.prettyName
 import com.mocoding.pokedex.ui.helper.LocalSafeArea
@@ -75,7 +76,7 @@ internal fun LocationsScreen(component: LocationsComponent) {
                 item("load-more") {
                     if (!state.isLastPageLoaded && state.locations.isNotEmpty()) {
                         LaunchedLoadMore {
-                            val nextPage = state.locations.size / 20L
+                            val nextPage = (state.locations.size + LocationsClient.PageSize - 1).toLong() / LocationsClient.PageSize
                             component.onEvent(LocationsStore.Intent.LoadLocationsByPage(nextPage))
                         }
                     }

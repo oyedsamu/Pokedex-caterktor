@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.core.model.MoveSummary
+import com.mocoding.pokedex.core.network.client.MovesClient
 import com.mocoding.pokedex.ui.feature.LaunchedLoadMore
 import com.mocoding.pokedex.ui.feature.prettyName
 import com.mocoding.pokedex.ui.helper.LocalSafeArea
@@ -97,7 +98,7 @@ private fun MovesContent(
                 item("load-more") {
                     if (!state.isLastPageLoaded && state.moveList.isNotEmpty()) {
                         LaunchedLoadMore {
-                            val nextPage = state.moveList.size / 20L
+                            val nextPage = (state.moveList.size + MovesClient.PageSize - 1).toLong() / MovesClient.PageSize
                             onEvent(MovesStore.Intent.LoadMovesByPage(nextPage))
                         }
                     }
