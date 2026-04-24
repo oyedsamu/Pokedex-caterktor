@@ -6,6 +6,7 @@ import com.mocoding.pokedex.core.network.model.PokemonResponse
 import io.github.oyedsamu.caterktor.ExperimentalCaterktor
 import io.github.oyedsamu.caterktor.NetworkClient
 import io.github.oyedsamu.caterktor.get
+import io.github.oyedsamu.caterktor.queryParameters
 
 @OptIn(ExperimentalCaterktor::class)
 class PokemonClient(
@@ -17,7 +18,10 @@ class PokemonClient(
     ): PokemonResponse {
         return handleErrors {
             val offset = page * PageSize
-            networkClient.get("pokemon?limit=$PageSize&offset=$offset")
+            networkClient.get("pokemon", queryParams = queryParameters(
+                "limit" to PageSize.toString(),
+                "offset" to offset.toString()
+            ))
         }
     }
 
