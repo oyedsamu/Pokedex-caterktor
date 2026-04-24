@@ -1,0 +1,127 @@
+package com.mocoding.pokedex.ui.moves
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.mocoding.pokedex.core.model.MoveSummary
+import com.mocoding.pokedex.core.network.client.MovesClient
+import com.mocoding.pokedex.ui.feature.LaunchedLoadMore
+import com.mocoding.pokedex.ui.feature.prettyName
+import com.mocoding.pokedex.ui.helper.LocalSafeArea
+import com.mocoding.pokedex.ui.moves.store.MovesStore
+
+@Composable
+internal fun MovesScreen(component: MovesComponent) {
+    val state by component.state.collectAsState()
+
+    MovesContent(
+        state = state,
+        onEvent = component::onEvent,
+        onOutput = component::onOutput,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MovesContent(
+    state: MovesStore.State,
+    onEvent: (MovesStore.Intent) -> Unit,
+    onOutput: (MovesComponent.Output) -> Unit,
+) {
+    val visibleMoves = state.moveList.filter {
+        state.searchValue.isBlank() || it.name.contains(state.searchValue, ignoreCase = true)
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Moves", fontWeight = FontWeight.Bold) },
+                navigationIcon = {
+                    IconButton(onClick = { onOutput(MovesComponent.Output.NavigateBack) }) {
+                        Icon(Icons.Rounded.ArrowBackIosNew, contentDescription = null)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+            )
+        },
+        modifier = Modifier.padding(LocalSafeArea.current),
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            OutlinedTextField(
+                value = state.searchValue,
+                onValueChange = { onEvent(MovesStore.Intent.UpdateSearchValue(it)) },
+                leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },
+                label = { Text("Search moves") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+            )
+
+            if (state.isLoading) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
+
+            state.error?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                )
+            }
+
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(visibleMoves, key = { it.name }) { move ->
+                    MoveRow(move = move) {
+                        onOutput(MovesComponent.Output.NavigateToMoveDetails(move.name))
+                    }
+                }
+
+                item("load-more") {
+                    if (!state.isLastPageLoaded && state.moveList.isNotEmpty()) {
+                        LaunchedLoadMore {
+                            val nextPage = (state.moveList.size + MovesClient.PageSize - 1).toLong() / MovesClient.PageSize
+                            onEvent(MovesStore.Intent.LoadMovesByPage(nextPage))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MoveRow(
+    move: MoveSummary,
+    onClick: () -> Unit,
+) {
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+    ) {
+        Text(
+            text = move.name.prettyName(),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}

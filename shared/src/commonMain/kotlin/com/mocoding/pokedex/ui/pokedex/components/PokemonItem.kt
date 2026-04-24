@@ -14,6 +14,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mocoding.pokedex.core.model.Pokemon
+import com.mocoding.pokedex.ui.helper.LocalAnimatedVisibilityScope
+import com.mocoding.pokedex.ui.helper.LocalSharedTransitionScope
 import com.mocoding.pokedex.ui.main.components.AsyncImage
 import com.mocoding.pokedex.ui.theme.*
 
@@ -24,6 +26,9 @@ internal fun PokemonItem(
     pokemon: Pokemon,
     modifier: Modifier = Modifier,
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+    val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
+
     val brush = remember {
         Brush.linearGradient(
             listOf(
@@ -62,14 +67,22 @@ internal fun PokemonItem(
                 .background(brush = brush, alpha = .4f)
                 .padding(10.dp)
         ) {
+            val imageModifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.2f)
+                .fillMaxHeight()
             AsyncImage(
                 url = pokemon.imageUrl,
                 contentDescription = pokemon.name,
                 contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.2f)
-                    .fillMaxHeight()
+                modifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                    with(sharedTransitionScope) {
+                        imageModifier.sharedElement(
+                            sharedContentState = rememberSharedContentState(key = "pokemon_image_${pokemon.name}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        )
+                    }
+                } else imageModifier
             )
 
             Spacer(Modifier.height(14.dp))

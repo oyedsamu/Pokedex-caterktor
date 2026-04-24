@@ -1,34 +1,29 @@
-package com.mocoding.pokedex.ui.details
+package com.mocoding.pokedex.ui.moves
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
-import com.mocoding.pokedex.ui.details.store.DetailsStore
-import com.mocoding.pokedex.ui.details.store.DetailsStoreFactory
+import com.mocoding.pokedex.ui.moves.store.MovesStore
+import com.mocoding.pokedex.ui.moves.store.MovesStoreFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 
-class DetailsComponent(
+class MovesComponent(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
-    val pokemonName: String,
-    private val output: (Output) -> Unit
-): ComponentContext by componentContext {
-
-    private val detailsStore =
+    private val output: (Output) -> Unit,
+) : ComponentContext by componentContext {
+    private val movesStore =
         instanceKeeper.getStore {
-            DetailsStoreFactory(
-                storeFactory = storeFactory,
-                pokemonName = pokemonName
-            ).create()
+            MovesStoreFactory(storeFactory).create()
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val state: StateFlow<DetailsStore.State> = detailsStore.stateFlow
+    val state: StateFlow<MovesStore.State> = movesStore.stateFlow
 
-    fun onEvent(event: DetailsStore.Intent) {
-        detailsStore.accept(event)
+    fun onEvent(event: MovesStore.Intent) {
+        movesStore.accept(event)
     }
 
     fun onOutput(output: Output) {
@@ -37,6 +32,6 @@ class DetailsComponent(
 
     sealed class Output {
         object NavigateBack : Output()
+        data class NavigateToMoveDetails(val moveName: String) : Output()
     }
-
 }
